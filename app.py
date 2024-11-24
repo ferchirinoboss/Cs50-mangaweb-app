@@ -3,13 +3,14 @@ import requests
 
 app = Flask(__name__)
 
-def add_manga(list, id, title, cover_art_id, cover_fileName, cover_img):
+def add_manga(list, id, title, cover_art_id, cover_fileName, cover_img, description):
     list.append({
         "id": id,
         "title": title,
         "cover_art_id": cover_art_id,
         "cover_fileName": cover_fileName,
-        "cover_img": cover_img 
+        "cover_img": cover_img, 
+        "manga_description": description
     })
 
 @app.route('/')
@@ -47,6 +48,9 @@ def search():
         for manga in response.json()["data"]:
             manga_id =  manga["id"]
             manga_title = manga["attributes"]["title"]["en"]
+            try:
+                manga_description = manga["attributes"]["description"]["en"]
+            except: manga_description = 'no english description available'
 
             for relationship in manga["relationships"]:
                 if relationship["type"] == "cover_art":
@@ -55,7 +59,6 @@ def search():
 
                     cover_fileName_response = requests.get(
                         f"{base_url}/cover/{cover_art_id}"
-                        # params={"id": cover_art_id}
                     )
                     cover_fileName = cover_fileName_response.json()["data"]["attributes"]["fileName"]
             
@@ -65,10 +68,10 @@ def search():
                 # use the proxy route 
                 proxy_cover_url = f"/proxy-cover?url={cover_url}"
 
-            add_manga(manga_collection, manga_id, manga_title, cover_art_id, cover_fileName, proxy_cover_url)
+            add_manga(manga_collection, manga_id, manga_title, cover_art_id, cover_fileName, proxy_cover_url, manga_description)
             
 
-        return render_template("search.html", manga_collection=manga_collection, cover_fileName_response=cover_fileName_response)
+        return render_template("search.html", manga_collection=manga_collection)
 
 if __name__ == '__main__':
     app.run(debug=True)

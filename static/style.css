@@ -42,6 +42,7 @@
 		flex-direction: row;	
 		align-items: center;
 		gap: 15%;
+		text-decoration: none;
 
 		@media (max-width: 768px)   /* PUT TEXT BELOW ICON INSTEAD OF AT THE SIDE WHEN ON MOBILE*/
 		{
