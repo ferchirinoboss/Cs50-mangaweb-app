@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block css%} 
+    <link rel="stylesheet" href="static\search.css">
+{% endblock %}
+
+{% block title %} Search {% endblock %}
+
+{% block body %}  
+    {% for manga in manga_collection %}
+        <div class="manga-card">
+            <h1>{{manga["title"]}}</h1>
+            <h1>{{manga["id"]}}</h1>
+            <h1>{{manga["cover_art_id"]}}</h1>
+            <h1>{{manga["cover_img"]}}</h1>
+
+            <img src= "{{ manga['cover_img']}}">
+            <!-- <img src="https://uploads.mangadex.org/covers/8f3e1818-a015-491d-bd81-3addc4d7d56a/2a0f3da4-e983-44df-b7d5-5ff67f678cf8.jpg"> -->
+
+
+            <h1>{{cover_fileName_response["data"]}}</h1>
+        </div>
+        
+    {% endfor %}
+{% endblock %}

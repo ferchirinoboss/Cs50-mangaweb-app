@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/static/style.css" rel="stylesheet">
+    <title>{% block title %}  {% endblock %}</title>
+    {% block css %} {% endblock %}
+</head>
+
+<body>
+    <div id="top_bar">
+        <div id="left-top-menu-button-and-web-icon">
+            <!-- Icon idea credits to Yacine: https://codepen.io/fromwireframes/pen/arMrYp -->
+            <div class="left-top-menu-button-icon">
+                <input class="left-top-menu-button-checkBox" type="checkbox"/>
+                <div>
+                    <span></span>
+                    <span></span>
+                </div>>
+            </div>
+    
+            <a class="left-top-web-name-icon" href="/">
+                <img src="static\img\chibi_gura_icon.png" alt="ChibiGura Icon" height="50px" width="55px">
+            </a>
+        </div>
+        
+        <div class="search-and-user">
+            <form method="POST" action="/search">
+                <div class="search-bar-div"> 
+                    <!-- credit Iiyaxu123 https://uiverse.io/liyaxu123/warm-eel-62 -->
+                    <input class="search-input-bar" name="search_query" autocomplete="off" style="padding-right: 80px;" required>
+                    <label>
+                        <span style="transition-delay: 0ms;">M</span>
+                        <span style="transition-delay: 50ms;">a</span>
+                        <span style="transition-delay: 100ms;">n</span>
+                        <span style="transition-delay: 150ms;">g</span>
+                        <span style="transition-delay: 200ms;">a</span>
+                    </label>
+                </div>
+            </form>
+            
+            <div class="user-img-div">
+                <img class="top-bar-user-image" src="static\img\user_icon.png" height="45px" width="50px">
+            </div>
+        </div>
+    
+    </div>
+    
+    <div class="vertical-menu">
+        <a class="vertical-menu-icon" href="/" style="justify-content: center; display:flex; align-items:center">
+            <img src="static\img\chibi_gura_icon.png" alt="ChibiGura Icon" class="gura-vertical-menu">
+        </a>
+
+        <div class="vertical-menu-option">
+            <a href="/" >
+                <img src="static\img\home_icon.png" alt="home icon" height="70px" width="70px">
+                <label>Home</label>
+            </a>
+        </div>
+        
+        <div class="vertical-menu-option">
+            <a href="/library">
+                <img src="static\img\library_icon.png" alt="library" height="100px" width="70px">
+                <label>Library</label>
+            </a>
+        </div>
+
+        <div class="vertical-menu-ina">
+            <img src="static\img\comfy_ina.png" alt="vertical menuu ina">
+        </div>
+    </div>
+    {% block body %}
+        
+    {% endblock %}
+</body>
+
+
+<script src="static/js/layout.js"></script>
+
+</html>

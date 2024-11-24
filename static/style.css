@@ -1,0 +1,287 @@
+/* VERTICAL MENU */
+.vertical-menu{
+	background-color:  #747578;
+	height: 100vh;
+	width: 18%;
+	position: fixed;
+	transition: transform 0.3s ease;
+	z-index: 998;
+	display: flex;
+	flex-direction: column;  /* MAKE ELEMENTS ORGANIZE LIKE A COLUMN*/
+	top: 0;
+	left: 0;
+	align-items: stretch;
+	transform: translateX(-100%);  /* HIDE THE VERTICAL MENU*/
+	gap: 5px;
+	
+}
+
+.gura-vertical-menu{
+	height: 100px;
+	width: 110px;
+
+	@media (max-width: 768px)    /* CHANGE CHIBI GURA VERTICAL MENU SIZE WHEN ON MOBILE*/
+	{
+		height: 50px;
+		width:  55px;
+	}
+}
+
+
+
+.vertical-menu-option{
+	display: flex; 
+	width: 100%;
+	gap: 15px;
+	
+	
+	a{
+		width: 100%;
+		display: flex;
+		justify-content: center;
+		flex-direction: row;	
+		align-items: center;
+		gap: 15%;
+
+		@media (max-width: 768px)   /* PUT TEXT BELOW ICON INSTEAD OF AT THE SIDE WHEN ON MOBILE*/
+		{
+			gap: 0px;
+			flex-direction: column;	
+		}
+	}
+
+	img{
+
+		@media (max-width: 768px){
+			transform: none;
+			height: 40px;
+			width:  40px;
+		}
+	}
+
+	label{
+		color: #fff;
+	}
+
+	:hover{
+		background-color: #b4b4b690;
+	}
+}
+
+.vertical-menu-ina{
+	position: absolute;
+	bottom: 0;
+	img{
+		height: 157px;
+		width: 225px;
+
+		@media (max-width: 768px)   
+		{
+			height: 60px;
+			width: 77px;
+		}
+	}
+}
+
+
+
+#top_bar{
+    background-color: #747578;
+    height: 65px;
+	width: 100%;
+    position: sticky;
+    top: 0;
+	display: flex;
+}
+
+/* LEFT BUTTON FORM TOP BAR */
+/* credits to Yacine: https://codepen.io/fromwireframes/pen/arMrYp */
+#left-top-menu-button-and-web-icon {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	
+	.left-top-menu-button-icon {     /* VERTICAL MENU BUTTON*/
+		transform: scale(1.5);
+	}
+}
+
+:root {  /* DECLARE VARIABLES */
+	--bar-bg: #ffff;  /* ICON COLOR*/
+}
+
+.left-top-menu-button-icon {
+	position: relative;
+	width: 50px;
+	height: 50px;     
+	cursor: pointer; /* CHANGES CURSOR TO A HAND WHEN YOU HOVER IT*/
+    justify-content: flex-start;
+	transition: transform 0.3s ease;
+	z-index: 1000;
+
+	.left-top-menu-button-checkBox {
+		display: block;
+		width: 100%;
+		height: 100%;
+		position: relative;
+		cursor: pointer;
+		z-index: 999;
+		-webkit-touch-callout: none;
+		opacity: 0;
+	}
+	div {
+		margin: auto;
+		position: absolute;
+		top: 0;
+		right: 0;
+		left: 0;
+		bottom: 0;
+		width: 22px;
+		height: 12px;
+	}
+	span {
+		position: absolute;
+		display: block;
+		width: 100%;
+		height: 2px;
+		background-color: var(--bar-bg);  /*MAKES THE LINES*/
+		border-radius: 1px;
+		transition: all 0.2s cubic-bezier(0.1, 0.82, 0.76, 0.965);
+
+		&:first-of-type {
+			top: 0;
+		}
+		&:last-of-type {
+			bottom: 0;
+		}
+	}
+	&.active,
+	.left-top-menu-button-checkBox:checked + div {
+		span {									/* MAKE THE LINES CROSS TO FORM X WHEN CLICKED*/
+			&:first-of-type {
+				transform: rotate(45deg);
+				top: 5px;
+			}
+			&:last-of-type {
+				transform: rotate(-45deg);
+				bottom: 5px;
+			}
+		}
+		
+	
+	}
+
+	&.active:hover span:first-of-type,
+	&.active:hover span:last-of-type,
+	&:hover .left-top-menu-button-checkBox:checked + div span:first-of-type,
+	&:hover .left-top-menu-button-checkBox:checked + div span:last-of-type {
+		width: 22px;
+	}
+
+	&:hover {
+		@media (min-width: 1024px) {
+			span:first-of-type {
+				width: 26px;
+			}					/*MAKES ONE LINE BIGGES AND THE OTHER SMALLER WHEN YOU HOVER OVER IT*/
+									
+			span:last-of-type {
+				width: 12px;
+			}
+		}
+	}
+}
+
+/* LEFT WEB NAME ICON FROM TOP BAR */
+.left-top-web-name-icon{
+    justify-content: center;
+	transition: opacity 0.3s;
+}
+
+/*RIGHT SEARCH BAR FROM TOP BAR*/
+.search-and-user{
+	margin-left: auto; 
+	display: flex; 
+	align-items: center; 
+	gap: 20px;
+	
+}
+/* credits for the idea and part of the code Iiyaxu123 https://uiverse.io/liyaxu123/warm-eel-62 */
+/* credits also to ChatGPT for helping solve a bug with this input feature*/
+.search-bar-div{
+	position: relative;
+	margin: 0px 90px 10px;  /*CHANGE THE POSITION */
+  	width: auto;
+
+	@media (max-width: 768px){	/* ADAPT THE TOP BAR WHEN ON MOBILE*/
+		margin: 0 10px 10px;
+		width: 50%; 			
+		max-width: 300px;
+	}
+	
+}
+
+.search-bar-div input{
+	background-color: transparent;
+	border: 0;
+	border-bottom: 2px #fff solid;
+	display: block;
+	width: 100%;
+	padding: 15px 0;
+	font-size: 13px;
+	color: #fff;
+}
+.search-bar-div input:focus,
+.search-bar-div input:valid{
+	outline: 0;
+	border-bottom-color: lightblue;
+}
+.search-bar-div label{
+	position: absolute;
+	top: 23px;  /*START LABEL POSITION*/
+	left: 0;
+	pointer-events: none;
+	display: block;
+	transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.search-bar-div label span{
+	display: inline-block;
+	font-size: 18px;
+	min-width: 5px;
+	color: #fff;
+	transform: translateY(0);
+	transition: transform 0.3s ease, color 0.3s ease;
+}
+.search-bar-div input:focus + label span,
+.search-bar-div input:valid + label span,
+.search-bar-div input:hover + label span {
+	color: lightblue;
+  	transform: translateY(-32px);  /*MOVE LABLE WHEN HOVER*/
+}
+
+
+
+body{
+    background-color: #191a1c;
+    height: 100vh;
+	overflow: auto;
+}
+
+html, body{
+    height: 100%;
+    margin: 0;
+}
+
+/* CUSTOMIZE THE SCROLLBAR */
+::-webkit-scrollbar {
+    width: 12px;     /* THE WHOLE SCROLLBAR  */
+    height: 12px;  
+  }
+
+::-webkit-scrollbar-track{
+    background-color: #191a1c;  /* SCROLLBAR BCKG */
+}
+
+::-webkit-scrollbar-thumb{
+    background-color: #4a4b4d;   /* THE SCROLLBAR PART THAT MOVES */
+    border-radius: 10px;
+}
