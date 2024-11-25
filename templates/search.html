@@ -12,7 +12,7 @@
     {% else %}
         <div class="search-grid">
             {% for manga in manga_collection %}
-                    <a href="/forManga?title={{manga['title']}}" class="manga-card-a">
+                    <a href="/forManga/{{ manga['id'] }}/{{ manga['title'] }}" class="manga-card-a">
                         <div class="manga-card">
                             <div class="manga-cover-div">
                                 <img class="manga-cover" src= "{{ manga['cover_img']}}">
@@ -25,6 +25,7 @@
 
                                 <div class="manga-description">
                                     <p>{{ manga["manga_description"] }}</p>
+                                    <p>{{ manga['id']}}</p>
                                 </div>
                             </div>
                         </div>

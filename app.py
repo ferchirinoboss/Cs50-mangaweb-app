@@ -73,6 +73,17 @@ def search():
 
         return render_template("search.html", manga_collection=manga_collection)
 
+
+@app.route('/forManga/<manga_id>/<manga_title>')
+def forManga(manga_id, manga_title):
+    base_url = "https://api.mangadex.org"
+
+    response = requests.get(
+            f"{base_url}/manga/{manga_id}/feed"
+    )
+
+    return render_template("formanga.html", manga_title=manga_title)
+
 if __name__ == '__main__':
     app.run(debug=True)
 
