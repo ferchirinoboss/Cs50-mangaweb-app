@@ -16,6 +16,12 @@
     .manga-cover{
         height: 239.08px;
         width: 168px;
+
+        @media  (max-width: 768px)    /* CHANGE IMG SIZE WHEN ON MOBILE*/
+        {
+            height: 167.35px;
+            width:  117.6px;
+        }
     }
 
 }
