@@ -1,0 +1,51 @@
+.manga-container {
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    background-color: #000;
+    overflow: hidden;
+    position: relative;
+}
+.page-container{
+    display: flex;
+    justify-content: center;
+    width: 86%;
+    height: 111%;
+
+    @media (max-width: 768px){
+        width: 100%;
+        height: 100%;
+        align-items: center;
+    }
+}
+.page-container img {
+    max-width: 90%;
+    max-height: 90%;
+    
+    display: none; /* Hide all images initially */
+
+    @media (max-width: 768px){
+        max-width: 100%;
+        padding-top: 0;
+    }
+}
+
+.page-container img.active {
+    display: block; /* Show only the active image */
+    
+}
+.click-zone {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 50vw;
+    cursor: pointer;
+}
+.left-zone {
+    left: 0;
+    height: 100%;
+}
+.right-zone {
+    right: 0;
+    height: 100%;
+}

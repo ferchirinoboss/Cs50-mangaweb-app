@@ -1,0 +1,116 @@
+.manga-cover1{
+    display: block;
+    justify-content: center;
+    align-items: center;
+    padding-left: 2%;
+
+    img{
+        width: 200px;
+        height: 268.75px;
+
+    }
+
+    @media (max-width: 768px){
+        padding-left: 25%;
+    }
+
+}
+
+.main-grid{
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+    gap: 20px;
+}
+
+.manga-img-title-descrip{
+    display: flex;
+    flex-direction: row;
+    padding-top: 2.6%;
+    gap: 15px;
+
+    @media (max-width: 768px){
+        flex-direction: column;
+    }
+}
+
+.manga-title{
+    color: white;
+    font-weight: 800;
+    font-size: 34px;
+}
+.manga-description{
+    font-size: 16px;
+}
+
+
+.volumes-card-container{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.chapter-card{
+    text-decoration: none;
+
+    p:hover{
+        background-color: #2c2d31;
+    }
+}
+.chapters-container{
+    height: 0;
+    overflow: hidden;
+    padding: 0;
+    margin: 0;
+}
+
+
+
+.background-img{
+    z-index: -2;
+    position: absolute;
+    top: 5vw;
+    left: 0;
+    filter: blur(4.8px);
+    opacity: 60%;
+    width: 100vw;
+    height: 375px;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    @media (max-width: 768px){
+        background-size: 115%;
+    }
+    
+}
+.background-below-img{
+    z-index: -1;
+    position: absolute;
+    background-color: #191a1c;
+    top: 25vw;
+    width: 100vw;
+    height: 45vw;
+
+    @media (max-width: 768px){
+        top: 75vw;
+    }
+}
+
+
+.pagination{
+    padding-top: 3%;
+    padding-bottom: 3%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+
+    .pagination-button{
+        text-decoration: none;
+        font-size: 18px;
+        color: white;
+    }
+
+    .pagination-button:hover{
+        background-color: #2c2d31;
+    }
+}

@@ -1,11 +1,61 @@
 {% extends "layout.html" %}
 
 {% block css%} 
-    
+    <link href="/static/formanga.css" rel="stylesheet">
 {% endblock %}
 
-{% block title %} {{ manga_title }} {% endblock %}
+{% block title %} {{manga_title}} {% endblock %}
 
 {% block body %}
+    <div class="main-grid">
+        <div class="manga-img-title-descrip">
+            <div class="manga-cover1">
+                <img src="{{ proxy_cover_url}}">
+            </div>
+            
+            <div class="title-descrip">
+                <span class="manga-title" style="color: white;">{{ manga_title }}</span>
 
+                <p class="manga-description" style="color: white;">{{manga_description}}</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="volumes-card-container">
+            {% for volume in volume_list %}
+                <div class="volume-chapters-container">
+                    <div class="volume-header" style="display: flex; justify-content: center; align-items: center; width: 100vw; cursor:pointer;">
+                        <span style="color: white; font-size: 22px;">Volume {{volume["volume"]}}</span>
+                    </div>
+
+                    <div class="chapters-container">
+                        {% for manga in volume['chapters'] %}
+                            <a href="/chapter/{{manga['chapter']}}/{{manga['id']}}" class="chapter-card">
+                                <p style="color: white; padding-left: 3%;">Ch. {{manga["chapter"]}} &nbsp;&nbsp;&nbsp;{{manga["title"]}}</p>
+                                <!-- <p style="color: white;">{{ manga['id'] }}</p> -->
+                            </a>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+            <!-- <p style="color: white;">{{volume_list}}</p> -->
+        </div>
+    </div>
+
+    <div class="background-img" style="background-image: url('{{proxy_cover_url}}');"></div>
+    <div class="background-below-img"></div>
+
+    <div class="pagination">
+        {% if prev_page %}
+            <a href="{{url_for('forManga', manga_id=manga_id, cover_fileName=cover_fileName, page=prev_page)}}" class="pagination-button">Previous</a>
+        {% endif %}
+        {% if next_page %}
+            <a href="{{url_for('forManga', manga_id=manga_id, cover_fileName=cover_fileName, page=next_page)}}" class="pagination-button">Next</a>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block script%} 
+    <script src="\static\js\forManga.js"></script>
 {% endblock %}
