@@ -23,7 +23,48 @@ def add_chapter(id, volume, chapter, title):
 
 @app.route('/')
 def index():
-    return render_template("home.html")
+    base_url = "https://api.mangadex.org"
+    manga_collection = []
+
+    response = requests.get(
+        f"{base_url}/manga",
+            params={
+                "order[updatedAt]": "desc", 
+                "limit": 5,
+            }
+    )
+
+    for manga in response.json()["data"]:
+            manga_id =  manga["id"]
+            try:
+                manga_title = manga["attributes"]["title"]["en"]
+            except:
+                manga_title = manga["attributes"]["title"]["ja-ro"]
+
+            try:
+                manga_description = manga["attributes"]["description"]["en"]
+            except: manga_description = 'no english description available'
+
+            for relationship in manga["relationships"]:
+                if relationship["type"] == "cover_art":
+                    cover_art_id = relationship["id"]
+
+
+                    cover_fileName_response = requests.get(
+                        f"{base_url}/cover/{cover_art_id}"
+                    )
+                    cover_fileName = cover_fileName_response.json()["data"]["attributes"]["fileName"]
+            
+            if cover_fileName:
+                cover_url = f"https://uploads.mangadex.org/covers/{manga_id}/{cover_fileName}"  
+
+                # use the proxy route 
+                proxy_cover_url = f"/proxy-cover?url={cover_url}"
+
+            add_manga(manga_collection, manga_id, manga_title, cover_art_id, cover_fileName, proxy_cover_url, manga_description)
+
+
+    return render_template("home.html", manga_collection=manga_collection)
 
 
 @app.route('/library')
@@ -45,20 +86,34 @@ def search():
     manga_collection = []
 
     if request.method == 'POST':
-        manga_name = request.form["search_query"]
+        try:
+            manga_name = request.form["search_query"]
+        except:
+            manga_name = request.args.get("search_query")
         base_url = "https://api.mangadex.org"
+        limit = 5
+        page = request.args.get('page', 1, type=int)
+        offset = (page - 1) * limit
 
         response = requests.get(
             f"{base_url}/manga",
             params={
                 "title": manga_name,
-                "limit": 10,
+                "limit": limit,
+                "offset": offset
             }
         )
+        total_chapters = response.json()["total"]
+        next_page = page + 1 if offset + limit < total_chapters else None
+        prev_page = page - 1 if offset > 0 else None
 
         for manga in response.json()["data"]:
             manga_id =  manga["id"]
-            manga_title = manga["attributes"]["title"]["en"]
+            try:
+                manga_title = manga["attributes"]["title"]["en"]
+            except:
+                manga_title = manga["attributes"]["title"]["ja-ro"]
+
             try:
                 manga_description = manga["attributes"]["description"]["en"]
             except: manga_description = 'no english description available'
@@ -82,7 +137,7 @@ def search():
             add_manga(manga_collection, manga_id, manga_title, cover_art_id, cover_fileName, proxy_cover_url, manga_description)
             
 
-        return render_template("search.html", manga_collection=manga_collection)
+        return render_template("search.html", manga_collection=manga_collection, query=manga_name, prev_page=prev_page, next_page=next_page)
 
 
 @app.route('/forManga/<manga_id>/<cover_fileName>')

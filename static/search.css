@@ -15,7 +15,7 @@
 
     .manga-cover{
         height: 239.08px;
-        width: 168px;
+        width: 170px;
 
         @media  (max-width: 768px)    /* CHANGE IMG SIZE WHEN ON MOBILE*/
         {
@@ -26,8 +26,14 @@
 
 }
 
+.manga-title-desscription{
+    width: 100%;
+    height: 100%;
+}
+
 .manga-title{
     padding-top: 3%;
+    max-width: 100%;
     span{
         color: white;
         font-weight: 800;
@@ -38,9 +44,12 @@
 .manga-description{
     padding-right: 2%;
     padding-top: 0.3%;
+    max-width: 100%;
+    
     p{
         color: white;
         text-align: justify;
+        margin: 0;
     }
 }
 
@@ -53,6 +62,30 @@
 
 .manga-card{
     width: 100%;
-    height: 100%;
+    height: auto;
     display: flex;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.pagination{
+    padding-top: 3%;
+    padding-bottom: 3%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+
+    .pagination-button{
+        text-decoration: none;
+        font-size: 18px;
+        background-color: transparent;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    .pagination-button:hover{
+        background-color: #2c2d31;
+    }
 }

@@ -25,12 +25,25 @@
 
                                 <div class="manga-description">
                                     <p>{{ manga["manga_description"] }}</p>
-                                    <p>{{ manga['id']}}</p>
+                                    <!-- <p>{{ manga['id']}}</p> -->
                                 </div>
                             </div>
                         </div>
                     </a>
             {% endfor %}
+        </div>
+
+        <div class="pagination">
+            {% if prev_page %}
+                <form action="{{ url_for('search', search_query=query ,page=prev_page) }}" method="POST" class="pagination-form" >
+                    <button type="submit" class="pagination-button">Previous</button>
+                </form>
+            {% endif %}
+            {% if next_page %}
+                <form action="{{ url_for('search', search_query=query, page=next_page) }}" method="POST" class="pagination-form">
+                    <button type="submit" class="pagination-button">Next</button>
+                </form>
+            {% endif %}
         </div>
     {% endif %}
 {% endblock %}
