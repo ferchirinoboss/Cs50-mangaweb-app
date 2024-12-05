@@ -41,7 +41,13 @@
             </form>
             
             <div class="user-img-div" style="cursor: pointer;">
-                <img class="top-bar-user-image" src="\static\img\user_icon.png" height="45px" width="50px">
+                {% if not user_id %}
+                    <a href="/login">
+                        <img class="top-bar-user-image" src="\static\img\user_icon.png" height="45px" width="50px">
+                    </a>
+                {% else %}
+                    <img class="top-bar-user-image" src="\static\img\user_icon.png" height="45px" width="50px">
+                {% endif %}
             </div>
         </div>
     
@@ -69,6 +75,11 @@
         <div class="vertical-menu-ina">
             <img src="\static\img\comfy_ina.png" alt="vertical menuu ina">
         </div>
+    </div>
+
+    <div class="user_menu">
+        <img class="takodachi-user-menu" src="\static\img\takodachi.png" height="111px" width="113.5px">
+        <h1>{{ username }}</h1>
     </div>
     {% block body %}
         

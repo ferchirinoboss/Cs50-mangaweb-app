@@ -1,7 +1,16 @@
-from flask import Flask, redirect, render_template, request, session, Response
+from flask import Flask, redirect, render_template, request, session, Response, g
 import requests
+import sqlite3
+from werkzeug.security import check_password_hash, generate_password_hash
+import secrets
 
 app = Flask(__name__)
+app.secret_key = secrets.token_hex(16)
+
+db_connection = sqlite3.connect('mangaweb.db', check_same_thread=False)
+db_connection.row_factory = sqlite3.Row
+db = db_connection.cursor()
+
 
 def add_manga(list, id, title, cover_art_id, cover_fileName, cover_img, description):
     list.append({
@@ -64,7 +73,6 @@ def index():
             add_manga(manga_collection, manga_id, manga_title, cover_art_id, cover_fileName, proxy_cover_url, manga_description)
 
 
-    return render_template("home.html", manga_collection=manga_collection)
 
 
 @app.route('/library')
@@ -219,6 +227,60 @@ def chapter(chapter_num, chapter_id):
     imgs_FileNames = data["data"]
 
     return render_template('chapter_reader.html', img_baseUrl=img_baseUrl, hash=hash, imgs_FileNames=imgs_FileNames, chapter_num=chapter_num)
+
+
+@app.route('/login', methods=["GET", "POST"])
+def login():
+    session.clear()
+
+    if request.method == 'POST':
+        username = request.form["username"]
+        password = request.form["password"]
+        alert_message = None
+
+        if not username or not password:
+            alert_message = 'username and password required'
+
+        rows = db.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchall()
+
+        if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):  
+            alert_message = 'invalid username or password'
+        else:
+            session["user_id"] = rows[0]["id"]
+            return redirect("/")
+        
+        db_connection.commit()
+        db_connection.close()
+        return render_template("login.html", alert_message=alert_message)
+    return render_template("login.html")
+
+
+@app.route('/register', methods=["GET", "POST"])
+def register():
+    if request.method == 'POST':
+        username = request.form["username"]
+        password = request.form["password"]
+        confirmation = request.form["confirmation"]
+        alert_message = None
+        hashed_password = generate_password_hash(password, salt_length=2)
+
+        try:
+            db.execute("INSERT INTO users(username, hash) VALUES(?,?);", (username, hashed_password))
+            db_connection.commit()
+            db_connection.close()
+        except ValueError:
+            alert_message = 'Problem with username'
+
+        if not password or not confirmation:
+            alert_message = 'Problem with password'
+        elif password != confirmation:
+            alert_message = 'Problem with password'
+        
+
+        return render_template("register.html", alert_message=alert_message)
+    
+    return render_template("register.html")
+
 
 if __name__ == '__main__':
     app.run(debug=True)

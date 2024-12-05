@@ -22,3 +22,7 @@ document.querySelector('.left-top-menu-button-checkBox').addEventListener("chang
         vertical_menu_checkBox.style.transform = 'translateX(0) scale(1.5)';
     }
 } );
+
+// document.querySelector('.top-bar-user-image').addEventListener('click', function()){
+
+// }

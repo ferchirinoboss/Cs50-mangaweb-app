@@ -1,0 +1,33 @@
+{% extends "layout.html" %}
+
+{% block css%} 
+    <link rel="stylesheet" href="">
+{% endblock %}
+
+{% block title %} Register {% endblock %}
+
+
+{% block body %} 
+    <div class="container">
+        <h1 class="login-label">Register</h1>
+        <form action="/register" method="POST">
+            <input autocomplete="off" autofocus name="username" placeholder="Username" type="text">
+            <input autocomplete="off" name="password" placeholder="Password" type="password">
+            <input autocomplete="off" name="confirmation" placeholder="Confirmation" type="password">
+            <button type="submit">Register</button>
+        </form>
+
+        <div>
+            <a href="/login">Login</a>
+        </div>
+    </div>
+
+    {% if alert_message %}
+        <script type="text/javascript">
+            alert("{{ alert_message }}")
+        </script>
+    {% endif %}
+
+{% endblock %}
+
+{% block script%} {% endblock %}
