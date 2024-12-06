@@ -100,7 +100,7 @@ def index():
 
 @app.route('/library')
 def library():
-    return render_template("library.html")
+    return render_template("library.html", user_id=g.user_id, username=g.username)
 
 @app.route('/proxy-cover')    # PROXY FOR GETTING THE COVER IMG 
 def proxy():
@@ -168,7 +168,7 @@ def search():
             add_manga(manga_collection, manga_id, manga_title, cover_art_id, cover_fileName, proxy_cover_url, manga_description)
             
 
-        return render_template("search.html", manga_collection=manga_collection, query=manga_name, prev_page=prev_page, next_page=next_page)
+        return render_template("search.html", manga_collection=manga_collection, query=manga_name, prev_page=prev_page, next_page=next_page, user_id=g.user_id, username=g.username)
 
 
 @app.route('/forManga/<manga_id>/<cover_fileName>')
@@ -234,7 +234,7 @@ def forManga(manga_id, cover_fileName):
         # volume_list["chapters"].append(add_chapter(chapter_id, volume, chapter_num, title))
 
 
-    return render_template("formanga.html", manga_title=manga_title, manga_description=manga_description, proxy_cover_url=proxy_cover_url, volume_list=volume_list, next_page= next_page, prev_page=prev_page, manga_id=manga_id, cover_fileName=cover_fileName)
+    return render_template("formanga.html", manga_title=manga_title, manga_description=manga_description, proxy_cover_url=proxy_cover_url, volume_list=volume_list, next_page= next_page, prev_page=prev_page, manga_id=manga_id, cover_fileName=cover_fileName, user_id=g.user_id, username=g.username)
 
 @app.route('/chapter/<chapter_num>/<chapter_id>')
 def chapter(chapter_num, chapter_id):
@@ -249,7 +249,7 @@ def chapter(chapter_num, chapter_id):
     hash = data["hash"]
     imgs_FileNames = data["data"]
 
-    return render_template('chapter_reader.html', img_baseUrl=img_baseUrl, hash=hash, imgs_FileNames=imgs_FileNames, chapter_num=chapter_num)
+    return render_template('chapter_reader.html', img_baseUrl=img_baseUrl, hash=hash, imgs_FileNames=imgs_FileNames, chapter_num=chapter_num, user_id=g.user_id, username=g.username)
 
 
 @app.route('/login', methods=["GET", "POST"])
@@ -273,8 +273,8 @@ def login():
             return redirect("/")
         
         
-        return render_template("login.html", alert_message=alert_message)
-    return render_template("login.html")
+        return render_template("login.html", alert_message=alert_message, user_id=g.user_id, username=g.username)
+    return render_template("login.html", user_id=g.user_id, username=g.username)
 
 
 @app.route('/register', methods=["GET", "POST"])
@@ -297,9 +297,15 @@ def register():
             alert_message = 'Problem with password'
         
 
-        return render_template("register.html", alert_message=alert_message)
+        return render_template("register.html", alert_message=alert_message, user_id=g.user_id, username=g.username)
     
-    return render_template("register.html")
+    return render_template("register.html", user_id=g.user_id, username=g.username)
+
+@app.route('/logout')
+def logout():
+    session.clear()
+
+    return redirect("/")
 
 
 if __name__ == '__main__':

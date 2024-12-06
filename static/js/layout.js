@@ -23,6 +23,7 @@ document.querySelector('.left-top-menu-button-checkBox').addEventListener("chang
     }
 } );
 
-// document.querySelector('.top-bar-user-image').addEventListener('click', function()){
-
-// }
+document.querySelector('.top-bar-user-image').addEventListener('click', function() {
+    const div = document.querySelector('.user_menu');
+    div.classList.toggle('show')
+});

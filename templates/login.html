@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block css%} 
-    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="\static\login-register.css">
 {% endblock %}
 
 {% block title %} Login {% endblock %}
@@ -9,7 +9,7 @@
 
 {% block body %} 
     <div class="container">
-        <h1 class="login-label">Login</h1>
+        <h1 class="login-label">Log in</h1>
         <form action="/login" method="POST">
             <input autocomplete="off" autofocus name="username" placeholder="Username" type="text">
             <input autocomplete="off" name="password" placeholder="Password" type="password">

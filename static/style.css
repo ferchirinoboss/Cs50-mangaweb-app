@@ -4,7 +4,7 @@
 	z-index: 998;
 	position: fixed;
 	right: 3%;
-	top: 10%;
+	top: -100px;
 	height: auto;
 	width: 320px;
 	display: flex;
@@ -12,6 +12,8 @@
 	align-items: center;
 	padding-top: 2%;
 	padding-bottom: 2%;
+	transition: all 1s ease;
+	opacity: 0;
 
 	@media (max-width: 768px){
 		width: 250px;
@@ -21,6 +23,11 @@
 		color: white; 
 		text-decoration: none;
 	}
+}
+
+.show{
+	top: 10%;
+	opacity: 1;
 }
 
 
