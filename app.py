@@ -7,9 +7,7 @@ import secrets
 app = Flask(__name__)
 app.secret_key = secrets.token_hex(16)
 
-db_connection = sqlite3.connect('mangaweb.db', check_same_thread=False)
-db_connection.row_factory = sqlite3.Row
-db = db_connection.cursor()
+
 
 
 def add_manga(list, id, title, cover_art_id, cover_fileName, cover_img, description):
@@ -29,6 +27,30 @@ def add_chapter(id, volume, chapter, title):
         "chapter": chapter,
         "title": title
     }
+
+@app.before_request
+def load_user():
+    user_id = session.get("user_id")
+    g.db_connection = sqlite3.connect('mangaweb.db', check_same_thread=False)
+    g.db_connection.row_factory = sqlite3.Row
+    g.db = g.db_connection.cursor()
+    if user_id is not None:
+        g.user_id = user_id
+        username = g.db.execute("SELECT username FROM users WHERE id=?;", (int(user_id),)).fetchone()
+
+        if username:
+            g.username = username[0]
+        else:
+            g.username - None
+    else:
+        g.username = None 
+        g.user_id = None
+
+@app.teardown_appcontext
+def close_db(error):       # ENSURES THE DB IS CLOESED 
+    if hasattr(g, 'db'):
+        g.db.close()
+
 
 @app.route('/')
 def index():
@@ -73,6 +95,7 @@ def index():
             add_manga(manga_collection, manga_id, manga_title, cover_art_id, cover_fileName, proxy_cover_url, manga_description)
 
 
+    return render_template("home.html", manga_collection=manga_collection, user_id=g.user_id, username=g.username)
 
 
 @app.route('/library')
@@ -241,7 +264,7 @@ def login():
         if not username or not password:
             alert_message = 'username and password required'
 
-        rows = db.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchall()
+        rows = g.db.execute("SELECT * FROM users WHERE username = ?", (username,)).fetchall()
 
         if len(rows) != 1 or not check_password_hash(rows[0]["hash"], request.form.get("password")):  
             alert_message = 'invalid username or password'
@@ -249,8 +272,7 @@ def login():
             session["user_id"] = rows[0]["id"]
             return redirect("/")
         
-        db_connection.commit()
-        db_connection.close()
+        
         return render_template("login.html", alert_message=alert_message)
     return render_template("login.html")
 
@@ -265,9 +287,7 @@ def register():
         hashed_password = generate_password_hash(password, salt_length=2)
 
         try:
-            db.execute("INSERT INTO users(username, hash) VALUES(?,?);", (username, hashed_password))
-            db_connection.commit()
-            db_connection.close()
+            g.db.execute("INSERT INTO users(username, hash) VALUES(?,?);", (username, hashed_password))
         except ValueError:
             alert_message = 'Problem with username'
 
