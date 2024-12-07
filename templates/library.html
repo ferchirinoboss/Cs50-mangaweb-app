@@ -1,3 +1,35 @@
 {% extends "layout.html" %}
 
+{% block css%} 
+    <link rel="stylesheet" href="static\search.css">
+{% endblock %}
+
 {% block title %} Library {% endblock %}
+
+
+{% block body %} 
+<div class="search-grid">
+    {% for manga in manga_collection %}
+            <a href="/forManga/{{ manga['id'] }}/{{ manga['cover_fileName'] }}" class="manga-card-a">
+                <div class="manga-card">
+                    <div class="manga-cover-div">
+                        <img class="manga-cover" src= "{{ manga['cover_img']}}">
+                    </div>
+
+                    <div class="manga-title-desscription">
+                        <div class="manga-title">
+                            <span>{{manga["title"]}}</span>
+                        </div>
+
+                        <div class="manga-description">
+                            <p>{{ manga["manga_description"] }}</p>
+                            <!-- <p>{{ manga['id']}}</p> -->
+                        </div>
+                    </div>
+                </div>
+            </a>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block script%} {% endblock %}

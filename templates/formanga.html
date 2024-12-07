@@ -10,14 +10,19 @@
     <div class="main-grid">
         <div class="manga-img-title-descrip">
             <div class="manga-cover1">
-                <img src="{{ proxy_cover_url}}">
+                <img src="{{ proxy_cover_url }}">
             </div>
             
             <div class="title-descrip">
                 <span class="manga-title" style="color: white;">{{ manga_title }}</span>
 
                 <p class="manga-description" style="color: white;">{{manga_description}}</p>
-                </div>
+
+                <form method="POST" action="/save">
+                    <input type="hidden" value="{{manga_id}}" name="manga_id">
+                    <button type="submit">Save</button>
+                </form>
+                
             </div>
 
         </div>

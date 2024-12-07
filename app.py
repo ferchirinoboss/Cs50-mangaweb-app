@@ -9,7 +9,6 @@ app.secret_key = secrets.token_hex(16)
 
 
 
-
 def add_manga(list, id, title, cover_art_id, cover_fileName, cover_img, description):
     list.append({
         "id": id,
@@ -98,9 +97,62 @@ def index():
     return render_template("home.html", manga_collection=manga_collection, user_id=g.user_id, username=g.username)
 
 
+@app.route('/save', methods=["POST"])
+def save():
+    if request.method == 'POST':
+        if g.user_id:
+            manga_id = request.form['manga_id']
+
+            g.db.execute("INSERT INTO saved_mangas(user_id, manga_id) VALUES(?,?);", (g.user_id, str(manga_id)))
+            g.db_connection.commit()
+            
+            return redirect("/library")
+        else:
+            return redirect("/login")
+
+    
+
 @app.route('/library')
 def library():
-    return render_template("library.html", user_id=g.user_id, username=g.username)
+    cursor = g.db_connection.execute("SELECT * FROM saved_mangas WHERE user_id =?;", (g.user_id,)).fetchall()
+    saved_mangas = [dict(row) for row in cursor]
+    manga_collection = []
+    base_url = "https://api.mangadex.org"
+
+    for row in saved_mangas:
+        manga_id = row['manga_id']
+
+        response = requests.get(
+            f"{base_url}/manga/{manga_id}",
+        )
+        manga = response.json()["data"]
+        try:
+            manga_title = manga["attributes"]["title"]["en"]
+        except:
+            manga_title = manga["attributes"]["title"]["ja-ro"]
+
+        try:
+            manga_description = manga["attributes"]["description"]["en"]
+        except: manga_description = 'no english description available'
+
+        for relationship in manga["relationships"]:
+            if relationship["type"] == "cover_art":
+                cover_art_id = relationship["id"]
+
+                cover_fileName_response = requests.get(
+                    f"{base_url}/cover/{cover_art_id}"
+                )
+                cover_fileName = cover_fileName_response.json()["data"]["attributes"]["fileName"]
+        
+        if cover_fileName:
+            cover_url = f"https://uploads.mangadex.org/covers/{manga_id}/{cover_fileName}"  
+
+            # use the proxy route 
+            proxy_cover_url = f"/proxy-cover?url={cover_url}"
+
+        add_manga(manga_collection, manga_id, manga_title, cover_art_id, cover_fileName, proxy_cover_url, manga_description)
+
+    return render_template("library.html", user_id=g.user_id, username=g.username, manga_collection=manga_collection)
 
 @app.route('/proxy-cover')    # PROXY FOR GETTING THE COVER IMG 
 def proxy():
