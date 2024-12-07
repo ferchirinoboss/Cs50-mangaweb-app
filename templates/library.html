@@ -1,3 +1,41 @@
 {% extends "layout.html" %}
 
+{% block css%} 
+    <link rel="stylesheet" href="static\search.css">
+{% endblock %}
+
 {% block title %} Library {% endblock %}
+
+
+{% block body %} 
+<div class="search-grid">
+    {% for manga in manga_collection %}
+            <a href="/forManga/{{ manga['id'] }}/{{ manga['cover_fileName'] }}" class="manga-card-a">
+                <div class="manga-card">
+                    <div class="manga-cover-div">
+                        <img class="manga-cover" src= "{{ manga['cover_img']}}">
+                    </div>
+
+                    <div class="manga-title-desscription">
+                        <div class="manga-title">
+                            <span>{{manga["title"]}}</span>
+                        </div>
+
+                        <div class="manga-description">
+                            <p>{{ manga["manga_description"] }}</p>
+                            <!-- <p>{{ manga['id']}}</p> -->
+                             <p>{{manga_id}}</p>
+                        </div>
+
+                        <form style="padding-top: 10px;" method="POST" action="/delete">
+                            <input type="hidden" name="manga_id" value="{{manga_id}}">
+                            <button type="submit" style="border-radius: 8px;  background-color:#747578;">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </a>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block script%} {% endblock %}
