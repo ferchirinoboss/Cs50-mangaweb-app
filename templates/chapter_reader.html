@@ -11,7 +11,7 @@
     <div class="manga-container">
         <div class="page-container">
             {% for img in imgs_FileNames %}
-                <img src="{{img_baseUrl}}/data/{{hash}}/{{img}}" {% if loop.index == 1 %}class="active"{% endif %}>
+                <img src="/proxy-cover?url={{img_baseUrl}}/data/{{hash}}/{{img}}" {% if loop.index == 1 %}class="active"{% endif %}>
             {% endfor %}
         </div>
 

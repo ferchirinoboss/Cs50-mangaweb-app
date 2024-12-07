@@ -110,6 +110,15 @@ def save():
         else:
             return redirect("/login")
 
+@app.route('/delete', methods=["POST"])
+def delete():
+    if request.method == "POST":
+        manga_id = request.form["manga_id"]
+
+        g.db.execute("DELETE FROM saved_mangas WHERE user_id = ? AND manga_id = ?;", (g.user_id, manga_id))
+        g.db_connection.commit()
+
+        return redirect("/library")
     
 
 @app.route('/library')
@@ -118,6 +127,7 @@ def library():
     saved_mangas = [dict(row) for row in cursor]
     manga_collection = []
     base_url = "https://api.mangadex.org"
+    manga_id = 0
 
     for row in saved_mangas:
         manga_id = row['manga_id']
@@ -152,7 +162,7 @@ def library():
 
         add_manga(manga_collection, manga_id, manga_title, cover_art_id, cover_fileName, proxy_cover_url, manga_description)
 
-    return render_template("library.html", user_id=g.user_id, username=g.username, manga_collection=manga_collection)
+    return render_template("library.html", user_id=g.user_id, username=g.username, manga_collection=manga_collection, manga_id=manga_id)
 
 @app.route('/proxy-cover')    # PROXY FOR GETTING THE COVER IMG 
 def proxy():
