@@ -350,6 +350,7 @@ def register():
 
         try:
             g.db.execute("INSERT INTO users(username, hash) VALUES(?,?);", (username, hashed_password))
+            g.db_connection.commit()
         except ValueError:
             alert_message = 'Problem with username'
 
